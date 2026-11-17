@@ -26,9 +26,10 @@ np.array(list(lua_arr.values()))
 float_arr = np.array(list(lua_arr.values()), dtype=np.float32)
 sound = np.asarray([32767 * float_arr, 32767 * float_arr]).T.astype(np.int16)
 sound = pg.sndarray.make_sound(sound.copy())
-# sound.play()
-# apparently codeHS cant stream audio. Womp Womp. uncomment the above line of code when added to the github. for now using WAV
 
+sound.play() # play the sound
+
+'''
 with wave.open("output.wav", "wb") as wav_file:
     wav_file.setnchannels(2)    # 2 channels (Stero)
     wav_file.setsampwidth(2)    # 2 bytes per sample, 16 bit
@@ -36,3 +37,4 @@ with wave.open("output.wav", "wb") as wav_file:
     wav_file.writeframes(sound.getraw())
     wav_file.writeframes(sound.get_raw())
 print("Sound creation finished")
+'''
