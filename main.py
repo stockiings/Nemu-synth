@@ -10,7 +10,6 @@ import sys, pygame as pg, os
 import numpy as np
 import wave
 
-# Required in CodeHS to prevent audio driver errors
 os.environ['SDL_AUDIODRIVER'] = 'dummy'
 
 pg.mixer.init(frequency=44100, size=-16, channels=2)
