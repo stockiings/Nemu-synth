@@ -10,7 +10,7 @@ import sys, pygame as pg, os
 import numpy as np
 import wave
 
-os.environ['SDL_AUDIODRIVER'] = 'dummy'
+# os.environ['SDL_AUDIODRIVER'] = 'dummy'
 
 pg.mixer.init(frequency=44100, size=-16, channels=2)
 
@@ -33,7 +33,6 @@ with wave.open("output.wav", "wb") as wav_file:
     wav_file.setnchannels(2)    # 2 channels (Stero)
     wav_file.setsampwidth(2)    # 2 bytes per sample, 16 bit
     wav_file.setframerate(44100)# same sample rate as  everywhere else.
-    wav_file.writeframes(sound.getraw())
     wav_file.writeframes(sound.get_raw())
 print("Sound creation finished")
 '''
