@@ -77,7 +77,9 @@ function synth(wave, frequency, duration, sampling_rate)
             arr[i] = 2 * math.abs(2*(frequency * times[i] - math.floor(frequency*times[i] +0.5))) -1
         end
     elseif wave == 4  then      -- SAWTOOTH
-        arr[i] =  times - math.floor(times)
+        for i = 1, #times do
+            arr[i] =  times - math.floor(times)
+        end
     end
     
     return arr
