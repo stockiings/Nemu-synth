@@ -1,9 +1,15 @@
 --[[
-This is a sound synthesis program for effects and music, writen
-primarily in lua.
+This is a sound synthesis program for effects and
+music, writen primarily in lua.
 
-Logic will be made in lua. for now, actual sound generation will be
-handled by python.
+Logic will be made in lua. for now, actual sound
+generation/playback will be handled by python.
+
+maybe eventually,sound generation will be handled 
+by lua.
+
+Wikepedia saved my life for the math behind
+wave generation.
 
 Author: Antigreentea/Stockiings
 Date: 11/17/26
@@ -37,32 +43,51 @@ local sampling_rate = 44100 -- default value for pygame mixer
 local frequency = 440       -- [Hz]
 local duration = 1.5        -- seconds
 
-function synth(frequency, duration, sampling_rate)
+
+-- note types of waves: sin, square, triangle, sawtooth, noise.
+-- wave inputs: 1 - sin, 2 - square, 3 - triangle, 4 - sawtooth, 5 - noise
+-- base function for sin wave inspired from code by FunFET. Thanks for the tutorial.
+
+-- square wave can be generated using floor function indirectly
+-- through x(t) = (-1)^floor(2ft)
+-- where t is time, f and f is frequency
+
+-- sawtooth wave can be considered an extreme case of an asymetric triangle wave
+-- sawtooth can be constructed using additive synthesis
+-- 
+function synth(wave, frequency, duration, sampling_rate)
     if duration == nil then duration = 1.5 end
-    if sampling_rate= nil then sampling_rate = 44100 end
+    if sampling_rate == nil then sampling_rate = 44100 end
+    if wave == nil then return end
     local frames = duration * sampling_rate
     local times = linespace(0, duration, frames, false)
     local arr = {} -- math.cos(2*math.pi*frequency*linespace(0, duration, frames))
                    -- apparently you cant  use cos on an array. :Sob:
-                            
-    for i = 1, #times do
-        arr[i] = math.cos(2*math.pi*frequency*times[i])
+                   
+    if wave == 1 then           -- SIN
+        for i = 1, #times do
+            arr[i] = math.cos(2*math.pi*frequency*times[i])
+        end
+    elseif wave == 2 then      -- SQUARE
+        for i = 1, #times do
+            arr[i] = (-1)^math.floor(2*frequency*times[i])
+        end
+    elseif wave == 3 then      -- TRIANGLE (holy shit this math is asssss)
+        for i = 1, #times do
+            arr[i] = 2 * math.abs(2*(frequency * times[i] - math.floor(frequency*times[i] +0.5))) -1
+        end
+    elseif wave == 4  then      -- SAWTOOTH
+        arr[i] =  times - math.floor(times)
     end
     
     return arr
 end
 
-keylist = '123456789quertyuioasdfgjklzxcvbnm,.'
-local notes_file, err = io.open("noteslist.txt", "r") -- opens the noteslist text file
-local file_contents = file:read("*a")
-local note_list = []
-
-for line in io.open(noteslist.txt", "r") do -- splits the text file into a list line by line
-    note_list[#lines+1] = line
-end
-
-local keymod = '0-='
-local notes = {} -- dictionary to store samples
+arr = synth(2, 440, 1.5, sampling_rate)
 
 -- alleyoop
-return arr
+if arr == nil then
+    return 'Generation error. Arr is empty'
+else
+    return arr
+end
