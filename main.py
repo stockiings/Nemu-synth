@@ -26,11 +26,20 @@ def make_sound():
     if lua_arr == 'Generation error. Arr is empty':
         print(lua_arr)
         return
-    
+    print("Lua return type:", type(lua_arr))
+    print("Lua array length:", len(lua_arr))
     # convert lua table to floats
-    float_arr = np.array(list(lua_arr.values()), dtype=np.float32)
+    float_arr = np.array([lua_arr[i] for i in range(1, len(lua_arr) + 1)], dtype=np.float32)
+    
+    print("NumPy array shape:", float_arr.shape)
+    print("First 10 samples:", float_arr[:10])
+    print("Array size:", float_arr.nbytes, "bytes")
+    
     sound_array = np.asarray([32767 * float_arr, 32767 * float_arr]).T.astype(np.int16)
+    sound = pg.sndarray.make_sound(sound_array)float_arr = np.array(list(lua_arr.values()), dtype=np.float32)
+    
     sound.play()
+    
     option=0
     while True:
         option = int(input("Would you like to save this wave? (1) Yes | (2) No | (3) Play again:  "))
