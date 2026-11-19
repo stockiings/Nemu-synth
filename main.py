@@ -35,8 +35,10 @@ def make_sound():
     print("First 10 samples:", float_arr[:10])
     print("Array size:", float_arr.nbytes, "bytes")
     
-    sound_array = np.asarray([32767 * float_arr, 32767 * float_arr]).T.astype(np.int16)
-    sound = pg.sndarray.make_sound(sound_array)float_arr = np.array(list(lua_arr.values()), dtype=np.float32)
+    mono = (float_arr * 32767).astype(np.int16)
+    sound_array = np.column_stack((mono, mono))
+
+    sound = pg.sndarray.make_sound(sound_array)
     
     sound.play()
     
